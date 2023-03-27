@@ -1,0 +1,46 @@
+version: "3.7"
+
+volumes:
+  database_data:
+  parallax:
+
+networks:
+  default:
+
+services:
+  db:
+    image: postgres:latest
+    volumes:
+      - database_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=parallax
+      - POSTGRES_DB=parallax
+      - POSTGRES_PASSWORD=parallax
+    ports:
+      - '5432:5432'
+    networks:
+      - default
+
+  parallax:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/parallax
+    ports:
+      - "8000:8000"
+    expose:
+      - 8000
+    environment:
+      - PYTHONUNBUFFERED=1
+      - DJANGO_SETTINGS_MODULE=parallax.settings
+      - DEBUG=True
+      - DB_HOST=db
+      - DB_NAME=parallax
+      - DB_USER=parallax
+      - DB_PASSWORD=parallax
+    links:
+      - db
+    depends_on:
+      - db
+    networks:
+      - default
