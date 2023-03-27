@@ -16,7 +16,7 @@ class MovieLibraryManager(models.Manager):
 
 
 class MovieLibrary(Library, BaseModel):
-    pass
+    objects = MovieLibraryManager()
 
 
 class ShowLibraryManager(models.Manager):
@@ -24,7 +24,7 @@ class ShowLibraryManager(models.Manager):
 
 
 class ShowLibrary(Library, BaseModel):
-    pass
+    objects = ShowLibraryManager()
 
 
 class VideoLibraryManager(models.Manager):
@@ -32,4 +32,4 @@ class VideoLibraryManager(models.Manager):
 
 
 class VideoLibrary(Library, BaseModel):
-    pass
+    objects = VideoLibraryManager()

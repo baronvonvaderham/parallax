@@ -21,6 +21,8 @@ class Video(BaseModel):
     credits = models.ManyToManyField(Credit)
     tags = models.ManyToManyField(Tag)
 
+    objects = VideoManager()
+
     class Meta:
         verbose_name = _('video')
         verbose_name_plural = _('videos')

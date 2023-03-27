@@ -23,6 +23,8 @@ class Show(BaseModel):
     genres = models.ManyToManyField(Genre)
     tags = models.ManyToManyField(Tag)
 
+    objects = ShowManager()
+
     class Meta:
         verbose_name = _('show')
         verbose_name_plural = _('shows')
@@ -38,6 +40,8 @@ class Season(BaseModel):
     poster_image = models.CharField(_('poster image'), max_length=128, blank=True, null=True)
 
     show = models.ForeignKey(Show, null=False, on_delete=models.CASCADE)
+
+    objects = SeasonManager()
 
     class Meta:
         verbose_name = _('season')
@@ -56,6 +60,8 @@ class Episode(BaseModel):
     poster_image = models.CharField(_('poster image'), max_length=128, blank=True, null=True)
 
     credits = models.ManyToManyField(Credit)
+
+    objects = EpisodeManager()
 
     class Meta:
         verbose_name = _('episode')
