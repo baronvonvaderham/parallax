@@ -3,3 +3,4 @@ django-cas-ng
 djangorestframework
 django-languages-plus
 psycopg2
+pytest-django

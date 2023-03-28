@@ -6,6 +6,8 @@
 #
 asgiref==3.6.0
     # via django
+attrs==22.2.0
+    # via pytest
 certifi==2022.12.7
     # via requests
 charset-normalizer==3.1.0
@@ -25,11 +27,23 @@ django-languages-plus==2.0.0
     # via -r requirements.in
 djangorestframework==3.14.0
     # via -r requirements.in
+exceptiongroup==1.1.1
+    # via pytest
 idna==3.4
     # via requests
+iniconfig==2.0.0
+    # via pytest
 lxml==4.9.2
     # via python-cas
+packaging==23.0
+    # via pytest
+pluggy==1.0.0
+    # via pytest
 psycopg2==2.9.5
+    # via -r requirements.in
+pytest==7.2.2
+    # via pytest-django
+pytest-django==4.5.2
     # via -r requirements.in
 python-cas==1.6.0
     # via django-cas-ng
@@ -43,6 +57,8 @@ six==1.16.0
     # via python-cas
 sqlparse==0.4.3
     # via django
+tomli==2.0.1
+    # via pytest
 urllib3==1.26.15
     # via
     #   django-countries-plus

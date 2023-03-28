@@ -1,7 +1,9 @@
+from datetime import datetime
 import uuid
 
 from django.db import models
 from django.contrib.auth.base_user import AbstractBaseUser
+from django.utils.timezone import make_aware
 from django.utils.translation import gettext_lazy as _
 
 
@@ -17,7 +19,7 @@ class BaseModel(models.Model):
         editable=False
     )
     created_at = models.DateTimeField(auto_now=True)
-    updated_at = models.DateTimeField()
+    updated_at = models.DateTimeField(default=make_aware(datetime.now()))
     deleted_at = models.DateTimeField(blank=True, null=True)
 
     class Meta:
@@ -33,7 +35,13 @@ class User(AbstractBaseUser, BaseModel):
     username = models.CharField(_('username'), max_length=28, unique=True)
 
     objects = UserManager()
+    USERNAME_FIELD = 'username'
 
     class Meta:
         verbose_name = _('user')
         verbose_name_plural = _('users')
+
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.email = kwargs.get('email')
+        self.username = kwargs.get('username')

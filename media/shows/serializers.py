@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from library.serializers import ShowLibrarySerializer
 from media.serializers import GenreSerializer, TagSerializer, CreditSerializer
 from media.shows.constants import TV_AUDIENCE_LABEL, TV_CONTENT_LABEL
 from media.shows.models import Show, Season, Episode
@@ -26,11 +27,9 @@ class SeasonSerializer(serializers.ModelSerializer):
     end_date = serializers.DateField(required=False, allow_null=True)
     poster_image = serializers.CharField(required=False, max_length=128, allow_null=True)
 
-    episodes = EpisodeSerializer(many=True)
-
     class Meta:
         model = Season
-        fields = ['number', 'start_date', 'end_date', 'poster_image', 'show']
+        fields = ['number', 'start_date', 'end_date', 'poster_image']
 
 
 class ShowSerializer(serializers.ModelSerializer):
@@ -43,12 +42,11 @@ class ShowSerializer(serializers.ModelSerializer):
     poster_image = serializers.CharField(required=False, max_length=128, allow_null=True)
     country = serializers.CharField(required=False, max_length=8, allow_null=True)
 
+    library = ShowLibrarySerializer()
     genres = GenreSerializer(many=True)
     tags = TagSerializer(many=True)
-
-    seasons = SeasonSerializer(many=True)
 
     class Meta:
         model = Show
         fields = ['title', 'sort_title', 'alternate_title', 'premiere_date', 'network', 'summary',
-                  'poster_image', 'country', 'genres', 'tags']
+                  'poster_image', 'country', 'library', 'genres', 'tags']

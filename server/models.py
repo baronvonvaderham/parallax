@@ -43,7 +43,7 @@ class Server(BaseModel):
 
     owner = models.ForeignKey(User, on_delete=models.PROTECT, related_name=_('owner'))
     authorized_users = models.ManyToManyField(User, related_name=_('authorized_users'))
-    preferred_language = models.ForeignKey(Language, on_delete=models.PROTECT)
+    preferred_language = models.ForeignKey(Language, on_delete=models.PROTECT, blank=True, null=True)
 
     objects = ServerManager()
 

@@ -1,7 +1,7 @@
 SERVER_DEFAULTS = {
     'PUBLIC_PORT': 2500,
     'UPLOAD_LIMIT': 10,
-    'SCHEDULED_INTERVAL_SCAN': 60,  # minutes
+    'SCHEDULED_SCAN_INTERVAL': 60,  # minutes
     'QUEUE_RETENTION_INTERVAL': 28,  # days
     'MAX_QUEUE_SIZE': 30,
     'PLAYED_THRESHOLD': 90, # percent

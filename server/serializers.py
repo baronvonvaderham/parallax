@@ -1,3 +1,4 @@
+from languages_plus.models import Language
 from rest_framework import serializers
 
 from core.serializers import UserSerializer
@@ -6,7 +7,10 @@ from server.models import Server
 
 
 class LanguageSerializer(serializers.ModelSerializer):
-    pass
+
+    class Meta:
+        model = Language
+        fields = []
 
 
 class ServerSerializer(serializers.ModelSerializer):
@@ -18,7 +22,7 @@ class ServerSerializer(serializers.ModelSerializer):
     changes_detected_scan = serializers.BooleanField(required=False, default=True)
     scheduled_scan_enabled = serializers.BooleanField(required=False, default=False)
     scheduled_scan_interval = serializers.IntegerField(
-        required=False, default=SERVER_DEFAULTS.get('SCHEDULED_INTERVAL_SCAN'))
+        required=False, default=SERVER_DEFAULTS.get('SCHEDULED_SCAN_INTERVAL'))
     empty_trash_after_scan = serializers.BooleanField(required=False, default=True)
     allow_delete = serializers.BooleanField(required=False, default=True)
     queue_retention_interval = serializers.IntegerField(
@@ -40,4 +44,5 @@ class ServerSerializer(serializers.ModelSerializer):
         fields = ['name', 'remote_access', 'public_port', 'upload_limit', 'scan_automatically', 'changes_detected_scan',
                   'scheduled_scan_enabled', 'scheduled_scan_interval', 'empty_trash_after_scan', 'allow_delete',
                   'queue_retention_interval', 'max_queue_size', 'played_threshold', 'paused_termination_limit',
-                  'max_stream_count', 'transcoding_enabled', 'max_transcode_count']
+                  'max_stream_count', 'transcoding_enabled', 'max_transcode_count', 'owner', 'authorized_users',
+                  'preferred_language']
