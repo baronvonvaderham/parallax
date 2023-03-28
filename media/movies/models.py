@@ -21,13 +21,14 @@ class Movie(BaseModel):
     tagline = models.TextField(_('tagline'), blank=True, null=True)
     summary = models.TextField(_('summary'), blank=True, null=True)
     poster_image = models.CharField(_('poster image'), max_length=128, blank=True, null=True)
-    genres = models.ManyToManyField(Genre)
     country = models.CharField(_('country'), max_length=8, blank=True, null=True)
-    credits = models.ManyToManyField(Credit)
-    tags = models.ManyToManyField(Tag)
+
     # Library relationship can be null so the movie can be re-claimed by a new library,
     # saving having to retrieve metadata again.
     library = models.ForeignKey(MovieLibrary, null=True, on_delete=models.SET_NULL)
+    genres = models.ManyToManyField(Genre)
+    credits = models.ManyToManyField(Credit)
+    tags = models.ManyToManyField(Tag)
 
     objects = MovieManager()
 

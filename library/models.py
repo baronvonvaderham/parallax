@@ -6,7 +6,7 @@ from server.models import Server
 
 
 class Library(object):
-    name = models.CharField(_('name'), null=False)
+    name = models.CharField(_('name'), max_length=128, null=False)
     cover_photo = models.CharField(_('cover photo'), max_length=128, blank=True, null=True)
     server = models.ForeignKey(Server, null=False, on_delete=models.PROTECT)
 

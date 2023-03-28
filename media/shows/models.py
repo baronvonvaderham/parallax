@@ -35,6 +35,7 @@ class SeasonManager(models.Manager):
 
 
 class Season(BaseModel):
+    number = models.IntegerField(_('number'), null=False)
     start_date = models.DateField(_('start date'), blank=True, null=True)
     end_date = models.DateField(_('start date'), blank=True, null=True)
     poster_image = models.CharField(_('poster image'), max_length=128, blank=True, null=True)
@@ -53,6 +54,7 @@ class EpisodeManager(models.Manager):
 
 
 class Episode(BaseModel):
+    number = models.IntegerField(null=False)
     title = models.CharField(_('title'), max_length=256, blank=True, null=True)
     air_date = models.DateField(_('air date'), blank=True, null=True)
     tv_audience_label = models.CharField(choices=TV_AUDIENCE_LABEL, max_length=8, blank=True, null=True)
