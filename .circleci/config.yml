@@ -25,7 +25,8 @@ jobs:
       - run:
           name: Coverage report
           command: coverage report
-      - coveralls/upload:
+      - coveralls/upload
+
 workflows:
   test-workflow:
     jobs:
