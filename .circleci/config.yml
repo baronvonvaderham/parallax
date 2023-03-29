@@ -26,8 +26,8 @@ jobs:
           name: Coverage report
           command: coverage report
       - coveralls/upload:
-          parallel: true
 workflows:
   test-workflow:
     jobs:
     - build
+
