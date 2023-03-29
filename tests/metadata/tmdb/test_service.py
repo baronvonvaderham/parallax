@@ -32,7 +32,6 @@ class TestTMDBService:
             'query': 'True Grit'
         }
         results = tmdb_service.search(kind='movie', **kwargs)
-        print(len(results))
         # First 2 results are the original from 1969 and the 2010 remake.
         assert results[0]['title'] == 'True Grit'
         assert results[0]['release_date'] == '2010-12-22'
