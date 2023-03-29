@@ -1,7 +1,4 @@
 version: 2.1
-notify:
-  webhooks:
-    - url: https://coveralls.io/webhook?repo_token=COVERALLS_REPO_TOKEN
 orbs:
   coveralls: coveralls/coveralls@2.1.0
 jobs:
