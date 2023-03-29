@@ -1,6 +1,4 @@
 version: 2.1
-orbs:
-  coveralls: coveralls/coveralls@2.1.0
 jobs:
   build:
     docker:
@@ -23,8 +21,12 @@ jobs:
       - run:
           name: Coverage report
           command: coverage report
-      - coveralls/upload
-
+      - run:
+          name: Codecov
+          command: |
+            curl -Os https://uploader.codecov.io/latest/linux/codecov
+            chmod +x codecov
+            ./codecov
 workflows:
   test-workflow:
     jobs:
