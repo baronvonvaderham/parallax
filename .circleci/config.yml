@@ -19,7 +19,12 @@ jobs:
           name: Run Tests
           environment:
             DJANGO_SETTINGS_MODULE: 'parallax.test_settings'
-          command: coverage run -m pytest;
+          command: |
+            coverage run -m pytest
+            coverage report
+      - run:
+          name: Coverage report
+          command: coverage report
       - coveralls/upload:
           parallel: true
 workflows:

@@ -1,11 +1,6 @@
 # .coveragerc to control coverage.py
 [run]
-include =
-    */core/*
-    /*library/*
-    /*media/*
-    /*metadata/*
-    /*server/*
+source = .
 omit =
     *tests*
     *migrations*
