@@ -5,7 +5,11 @@ jobs:
   build:
     docker:
     - image: cimg/python:3.10.6
-    - image: cimg/postgres:9.6.2
+    - image: cimg/postgres:14.0
+      environment:
+        POSTGRES_USER: parallax
+        POSTGRES_DB: parallax
+        POSTGRES_PASSWORD: parallax
     steps:
       - checkout
       - run:
