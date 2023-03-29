@@ -12,7 +12,8 @@ jobs:
           command: pip install -r requirements.txt
       - run:
           name: Run Tests
-          environment: COVERALLS_REPO_TOKEN
+          environment:
+            DJANGO_SETTINGS_MODULE=parallax.settings
           command: |
             $HOME/.local/bin/coverage run -m pytest
 workflows:
