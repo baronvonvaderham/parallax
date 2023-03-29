@@ -12,6 +12,10 @@ certifi==2022.12.7
     # via requests
 charset-normalizer==3.1.0
     # via requests
+coverage==6.5.0
+    # via
+    #   -r requirements.in
+    #   python-coveralls
 django==4.1.7
     # via
     #   -r requirements.in
@@ -49,14 +53,21 @@ pytest-django==4.5.2
     # via -r requirements.in
 python-cas==1.6.0
     # via django-cas-ng
+python-coveralls==2.9.3
+    # via -r requirements.in
 pytz==2023.2
     # via djangorestframework
+pyyaml==6.0
+    # via python-coveralls
 requests==2.28.2
     # via
     #   django-countries-plus
     #   python-cas
+    #   python-coveralls
 six==1.16.0
-    # via python-cas
+    # via
+    #   python-cas
+    #   python-coveralls
 sqlparse==0.4.3
     # via django
 tomli==2.0.1

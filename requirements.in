@@ -1,3 +1,4 @@
+coverage
 django
 django-cas-ng
 django-environ
@@ -5,3 +6,4 @@ djangorestframework
 django-languages-plus
 psycopg2
 pytest-django
+python-coveralls

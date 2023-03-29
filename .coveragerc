@@ -1,0 +1,14 @@
+# .coveragerc to control coverage.py
+[run]
+source = .
+omit =
+    *tests*
+    *migrations*
+    *settings*
+    *wsgi.py
+    *manage.py
+    *test_*
+    *fixtures/*
+    *urls.py
+    *__init__.py
+    *apps.py

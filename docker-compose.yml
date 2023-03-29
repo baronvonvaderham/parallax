@@ -49,7 +49,7 @@ services:
 
   tests:
     build: .
-    command: pytest
+    command: coverage run -m pytest
     volumes:
       - .:/parallax
     env_file:
