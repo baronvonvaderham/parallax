@@ -23,6 +23,8 @@ django-cas-ng==4.3.0
     # via -r requirements.in
 django-countries-plus==2.1.0
     # via django-languages-plus
+django-environ==0.10.0
+    # via -r requirements.in
 django-languages-plus==2.0.0
     # via -r requirements.in
 djangorestframework==3.14.0

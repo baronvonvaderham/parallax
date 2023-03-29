@@ -146,7 +146,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'verbose_name': 'movie',
-                'verbose_name_plural': 'movies',
+                'verbose_name_plural': 'tmdb',
             },
         ),
         migrations.CreateModel(

@@ -35,7 +35,7 @@ class Movie(BaseModel):
 
     class Meta:
         verbose_name = _('movie')
-        verbose_name_plural = _('movies')
+        verbose_name_plural = _('tmdb')
 
     def __init__(self, **kwargs):
         super().__init__()

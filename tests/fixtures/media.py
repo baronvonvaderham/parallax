@@ -74,7 +74,7 @@ def stoner_movies(create_tag):
 @pytest.fixture
 def create_movie():
     """
-    A function to create 'media.movies.Movie' instances.
+    A function to create 'media.tmdb.Movie' instances.
     """
     from media.movies.models import Movie
 
