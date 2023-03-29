@@ -13,7 +13,7 @@ jobs:
       - run:
           name: Run Tests
           environment:
-            DJANGO_SETTINGS_MODULE=parallax.settings
+            DJANGO_SETTINGS_MODULE: 'parallax.settings'
           command: |
             $HOME/.local/bin/coverage run -m pytest
 workflows:
