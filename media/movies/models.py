@@ -6,28 +6,44 @@ from django.utils.translation import gettext_lazy as _
 from .constants import MOVIE_RATINGS
 from core.models import BaseModel
 from library.models import MovieLibrary
+from media.exceptions import InvalidFilepathError
 from media.constants import VALID_VIDEO_EXTENSIONS
 from media.models import Genre, Credit, Tag
 from media.utils import generate_sort_title
+from metadata.tmdb.service import TheMovieDatabaseService
 
 
 class MovieManager(models.Manager):
 
-    # def create(self, filepath):
-    #     if not self._validate_filepath(filepath):
-    #         return 'error'
-    #     metadata = self._retrieve_metadata(filepath)
-
-    def update(self):
-        pass
+    def create_from_file(self, filepath):
+        if not self._validate_filepath(filepath=filepath):
+            raise InvalidFilepathError(filepath)
+        title, year = self._get_title_year_from_filepath(filepath)
+        kwargs = {
+            'query': title,
+            'year': year,
+        }
+        service = TheMovieDatabaseService()
+        id = service.retrieve_id(kind='movie', **kwargs)
+        kwargs = service.retrieve_metadata(kind='movie', id=id)
+        genres = kwargs.pop('genres')
+        credits = kwargs.pop('credits')
+        movie = self.create(**kwargs)
+        genre_objects = [Genre.objects.get_or_create(**genre)[0] for genre in genres]
+        credit_objects = [Credit.objects.get_or_create(**credit)[0] for credit in credits]
+        movie.genres.add(*genre_objects)
+        movie.credits.add(*credit_objects)
+        return movie
 
     @staticmethod
     def _validate_filepath(filepath):
         return os.path.splitext(filepath)[-1] in VALID_VIDEO_EXTENSIONS
 
     @staticmethod
-    def _retrieve_metadata(filepath):
-        return []
+    def _get_title_year_from_filepath(filepath):
+        parts = os.path.splitext(filepath)[0].split('/')
+        title, year = parts[-1].split('(')
+        return ' '.join(title.split(' ')[:-1]), year.replace(')', '')
 
 
 class Movie(BaseModel):
@@ -40,7 +56,7 @@ class Movie(BaseModel):
     tagline = models.TextField(_('tagline'), blank=True, null=True)
     summary = models.TextField(_('summary'), blank=True, null=True)
     poster_image = models.CharField(_('poster image'), max_length=128, blank=True, null=True)
-    country = models.CharField(_('country'), max_length=8, blank=True, null=True)
+    country = models.CharField(_('country'), max_length=56, blank=True, null=True)
 
     # Library relationship can be null so the movie can be re-claimed by a new library,
     # saving having to retrieve metadata again.
@@ -67,11 +83,3 @@ class Movie(BaseModel):
         self.summary = kwargs.get('summary')
         self.poster_image = kwargs.get('poster_image')
         self.country = kwargs.get('country')
-        if kwargs.get('library'):
-            self.library = kwargs.get('library')
-        if kwargs.get('genres'):
-            self.genres = kwargs.get('genres')
-        if kwargs.get('credits'):
-            self.credits = kwargs.get('credits')
-        if kwargs.get('tags'):
-            self.tags = kwargs.get('tags')

@@ -50,6 +50,17 @@ class TheMovieDatabaseService(object):
         results = json.loads(response.content).get('results')
         return results
 
+    def retrieve_id(self, kind, **kwargs):
+        """
+        Method to retrieve the TMDB ID of an item.
+
+        Kwargs:
+            query: (required) The title of the item.
+            year: The release date year of the item.
+        """
+        results = self.search(kind=kind, **kwargs)
+        return results[0].get('id')
+
     def retrieve_metadata(self, kind, id):
         """
         Method to retrieve full details of an item.
