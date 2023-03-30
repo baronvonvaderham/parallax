@@ -144,5 +144,4 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # API CREDENTIALS
-TMDB_V4_API_TOKEN = env('TMDB_V4_API_TOKEN')
 TMDB_V3_API_KEY = env('TMDB_V3_API_KEY')
