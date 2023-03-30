@@ -1,7 +1,8 @@
 import os
 import pytest
 
-from media.movies.models import Movie
+from media.exceptions import InvalidFilepathError
+from media.movies.models import Movie, MovieManager
 from media.movies.serializers import MovieSerializer
 
 
@@ -15,12 +16,17 @@ def test_retrieve_id(tmdb_service):
 
 
 def test_title_year_from_file():
-    from media.movies.models import MovieManager
-
     filepath = os.path.abspath('tests/fixtures/samples/The Big Lebowski (1998).mp4')
     title, year = MovieManager._get_title_year_from_filepath(filepath=filepath)
     assert title == 'The Big Lebowski'
     assert year == '1998'
+
+
+def test_title_year_from_file__no_year():
+    filepath = os.path.abspath('tests/fixtures/samples/Not A Movie.crap')
+    title, year = MovieManager._get_title_year_from_filepath(filepath=filepath)
+    assert title == 'Not A Movie'
+    assert year is None
 
 
 def test_retrieve_metadata(tmdb_service, jeff_bridges):

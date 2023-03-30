@@ -42,8 +42,11 @@ class MovieManager(models.Manager):
     @staticmethod
     def _get_title_year_from_filepath(filepath):
         parts = os.path.splitext(filepath)[0].split('/')
-        title, year = parts[-1].split('(')
-        return ' '.join(title.split(' ')[:-1]), year.replace(')', '')
+        try:
+            title, year = parts[-1].split('(')
+        except ValueError:
+            return parts[-1], None
+        return ' '.join(title.split(' ')[:-1]), year.replace(')', '') if year else None
 
 
 class Movie(BaseModel):
