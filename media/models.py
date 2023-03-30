@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 from core.models import BaseModel
+from media.constants import CREDIT_TYPES
 
 
 class Genre(BaseModel):
@@ -16,6 +17,7 @@ class Genre(BaseModel):
 class Credit(BaseModel):
     name = models.CharField(_('name'), max_length=128, null=False)
     role = models.CharField(_('role'), max_length=128, null=False)
+    type = models.CharField(_('type'), choices=CREDIT_TYPES, max_length=4, null=False)
 
     class Meta:
         unique_together = [['name', 'role']]

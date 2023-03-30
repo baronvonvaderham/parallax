@@ -1,15 +1,33 @@
+import os
+
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from .constants import MOVIE_RATINGS
 from core.models import BaseModel
 from library.models import MovieLibrary
+from media.constants import VALID_VIDEO_EXTENSIONS
 from media.models import Genre, Credit, Tag
 from media.utils import generate_sort_title
 
 
 class MovieManager(models.Manager):
-    pass
+
+    # def create(self, filepath):
+    #     if not self._validate_filepath(filepath):
+    #         return 'error'
+    #     metadata = self._retrieve_metadata(filepath)
+
+    def update(self):
+        pass
+
+    @staticmethod
+    def _validate_filepath(filepath):
+        return os.path.splitext(filepath)[-1] in VALID_VIDEO_EXTENSIONS
+
+    @staticmethod
+    def _retrieve_metadata(filepath):
+        return []
 
 
 class Movie(BaseModel):

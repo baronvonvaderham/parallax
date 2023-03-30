@@ -23,13 +23,13 @@ def test_tag_serializer(classics):
     assert serializer.data['name'] == 'Classics'
 
 
-def test_movie_serializer(big_lebowski, movie_library):
+def test_movie_serializer(big_lebowski):
     serializer = MovieSerializer(instance=big_lebowski)
     assert serializer.data['title'] == 'The Big Lebowski'
     assert serializer.data['sort_title'] == 'Big Lebowski, The'
     assert not serializer.data['alternate_title']
     assert serializer.data['release_date'] == datetime.datetime(year=1998, month=3, day=6).date().isoformat()
-    assert serializer.data['studio'] == 'Working Title Films'
+    assert serializer.data['studio'] == ['Gramercy Pictures', 'PolyGram Filmed Entertainment', 'Working Title Films']
     assert serializer.data['movie_rating'] == 'R'
     summary = \
         """
@@ -39,8 +39,6 @@ def test_movie_serializer(big_lebowski, movie_library):
         his pals Walter Sobchak, a Vietnam vet, and Donny, master of stupidity.
         """
     assert serializer.data['summary'] == summary
-    assert serializer.data['library'].get('name') == movie_library.name
-    assert serializer.data['library'].get('server').get('name') == 'MyServer'
     assert len(serializer.data['genres']) == 2
     assert set([genre.get('name') for genre in serializer.data['genres']]) == {'Comedy', 'Crime'}
     assert set([credit.get('name') for credit in serializer.data['credits']]) == {'Jeff Bridges'}
@@ -48,7 +46,7 @@ def test_movie_serializer(big_lebowski, movie_library):
     assert set([tag.get('name') for tag in serializer.data['tags']]) == {'Classics', 'Stoner Movies'}
 
 
-def test_show_serializer(doug, show_library):
+def test_show_serializer(doug):
     serializer = ShowSerializer(instance=doug)
     summary = \
         """
@@ -61,8 +59,6 @@ def test_show_serializer(doug, show_library):
     assert serializer.data['premiere_date'] == datetime.datetime(year=1991, month=8, day=11).date().isoformat()
     assert serializer.data['network'] == 'Nickelodeon'
     assert serializer.data['summary'] == summary
-    assert serializer.data['library'].get('name') == show_library.name
-    assert serializer.data['library'].get('server').get('name') == 'MyServer'
     assert set([genre.get('name') for genre in serializer.data['genres']]) == {'Comedy'}
     assert set([tag.get('name') for tag in serializer.data['tags']]) == {'Classics'}
 
@@ -90,9 +86,8 @@ def test_episode_serializer(doug_bags_a_neematoad):
     assert set([credit.get('role') for credit in serializer.data['credits']]) == {'Douglas \'Doug\' Yancy Funnie'}
 
 
-def test_video_serializer(video, video_library):
+def test_video_serializer(video):
     serializer = VideoSerializer(instance=video)
     assert serializer.data['title'] == 'My First Birthday'
     assert serializer.data['release_date'] == datetime.datetime(year=1986, month=10, day=28).date().isoformat()
     assert serializer.data['summary'] == 'Video recorded as my first birthday!'
-    assert serializer.data['library'].get('name') == video_library.name

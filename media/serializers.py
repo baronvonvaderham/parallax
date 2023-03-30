@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from media.constants import CREDIT_TYPES
 from media.models import Genre, Credit, Tag
 
 
@@ -14,10 +15,11 @@ class GenreSerializer(serializers.ModelSerializer):
 class CreditSerializer(serializers.ModelSerializer):
     name = serializers.CharField(required=True, max_length=128)
     role = serializers.CharField(required=True, max_length=128)
+    type = serializers.ChoiceField(choices=CREDIT_TYPES, required=True)
 
     class Meta:
         model = Credit
-        fields = ['name', 'role']
+        fields = ['name', 'role', 'type']
 
 
 class TagSerializer(serializers.ModelSerializer):

@@ -1,6 +1,5 @@
 from rest_framework import serializers
 
-from library.serializers import ShowLibrarySerializer
 from media.serializers import GenreSerializer, TagSerializer, CreditSerializer
 from media.shows.constants import TV_AUDIENCE_LABEL, TV_CONTENT_LABEL
 from media.shows.models import Show, Season, Episode
@@ -40,13 +39,12 @@ class ShowSerializer(serializers.ModelSerializer):
     network = serializers.CharField(required=False, max_length=56, allow_null=True)
     summary = serializers.CharField(required=False, allow_null=True)
     poster_image = serializers.CharField(required=False, max_length=128, allow_null=True)
-    country = serializers.CharField(required=False, max_length=8, allow_null=True)
+    country = serializers.ListField(child=serializers.CharField(max_length=8), required=False, allow_null=True)
 
-    library = ShowLibrarySerializer()
     genres = GenreSerializer(many=True)
     tags = TagSerializer(many=True)
 
     class Meta:
         model = Show
         fields = ['title', 'sort_title', 'alternate_title', 'premiere_date', 'network', 'summary',
-                  'poster_image', 'country', 'library', 'genres', 'tags']
+                  'poster_image', 'country', 'genres', 'tags']

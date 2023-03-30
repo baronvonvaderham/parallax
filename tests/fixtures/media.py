@@ -96,7 +96,7 @@ def big_lebowski(create_movie, movie_library, comedy, crime, jeff_bridges, class
     kwargs = {
         'title': 'The Big Lebowski',
         'release_date': datetime(year=1998, month=3, day=6).date(),
-        'studio': 'Working Title Films',
+        'studio': ['Gramercy Pictures', 'PolyGram Filmed Entertainment', 'Working Title Films'],
         'movie_rating': 'R',
         'tagline': 'They figured he was a lazy, time-wasting slacker. They were right. Her life was in their hands.',
         'summary': summary,
