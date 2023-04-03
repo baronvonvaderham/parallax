@@ -38,6 +38,7 @@ def test_retrieve_metadata(tmdb_service, jeff_bridges):
     results = tmdb_service.search(kind='movie', **kwargs)
     movie_id = results[0].get('id')
     metadata = tmdb_service.retrieve_metadata(kind='movie', id=movie_id)
+    metadata['filepath'] = os.path.abspath('tests/fixtures/samples/The Big Lebowski (1998).mp4')
     serializer = MovieSerializer(data=metadata)
     assert serializer.is_valid()
     assert serializer.data.get('movie_rating') == 'R'
@@ -52,6 +53,7 @@ def test_retrieve_metadata(tmdb_service, jeff_bridges):
 def test_create_movie_with_metadata():
     filepath = os.path.abspath('tests/fixtures/samples/The Big Lebowski (1998).mp4')
     movie = Movie.objects.create_from_file(filepath)
+    assert movie.filepath == filepath
     assert movie.genres.count() == 2
     assert movie.credits.count() == 168
     assert movie.title == 'The Big Lebowski'

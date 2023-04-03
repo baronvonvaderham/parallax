@@ -63,7 +63,7 @@ def create_tag():
 
 @pytest.fixture
 def classics(create_tag):
-    return create_tag(name='Classics')
+    return create_tag(name='Classics', description='Movies Ernest Cline has seen.')
 
 
 @pytest.fixture

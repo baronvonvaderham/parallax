@@ -12,6 +12,7 @@ class VideoManager(models.Manager):
 
 
 class Video(BaseModel):
+    filepath = models.CharField(_('filepath'), max_length=1024, blank=True, null=True)
     title = models.CharField(_('title'), max_length=256, null=False)
     sort_title = models.CharField(_('title'), max_length=256, null=False)
     release_date = models.DateField(_('release date'), blank=True, null=True)
@@ -32,6 +33,7 @@ class Video(BaseModel):
 
     def __init__(self, **kwargs):
         super().__init__()
+        self.filepath = kwargs.get('filepath')
         self.title = kwargs.get('title')
         self.sort_title = kwargs.get('sort_title') if kwargs.get('sort_title') else generate_sort_title(self.title)
         self.release_date = kwargs.get('release_date')
@@ -39,3 +41,6 @@ class Video(BaseModel):
         self.poster_image = kwargs.get('poster_image')
         self.country = kwargs.get('country')
         self.library = kwargs.get('library')
+
+    def __str__(self):
+        return f'{self.title} ({self.release_date.year}'

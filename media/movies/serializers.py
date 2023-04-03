@@ -6,6 +6,7 @@ from media.movies.models import Movie
 
 
 class MovieSerializer(serializers.ModelSerializer):
+    filepath = serializers.CharField(required=True, max_length=1024)
     title = serializers.CharField(required=True, max_length=256)
     sort_title = serializers.CharField(required=False, max_length=256, allow_null=True)
     alternate_title = serializers.CharField(required=False, max_length=256, allow_null=True)
@@ -23,5 +24,5 @@ class MovieSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Movie
-        fields = ['title', 'sort_title', 'alternate_title', 'release_date', 'studio', 'movie_rating',
+        fields = ['filepath', 'title', 'sort_title', 'alternate_title', 'release_date', 'studio', 'movie_rating',
                   'tagline', 'summary', 'poster_image', 'country', 'genres', 'credits', 'tags']

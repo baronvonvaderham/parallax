@@ -51,6 +51,9 @@ class Show(BaseModel):
         if kwargs.get('tags'):
             self.tags = kwargs.get('tags')
 
+    def __str__(self):
+        return f'{self.title} ({self.premiere_date.year})'
+
 
 class SeasonManager(models.Manager):
     pass
@@ -78,12 +81,16 @@ class Season(BaseModel):
         self.poster_image = kwargs.get('poster_image')
         self.show = kwargs.get('show')
 
+    def __str__(self):
+        return f'{self.show.name} - Season {self.number}'
+
 
 class EpisodeManager(models.Manager):
     pass
 
 
 class Episode(BaseModel):
+    filepath = models.CharField(_('filepath'), max_length=1024, blank=True, null=True)
     number = models.IntegerField(blank=True, null=True)
     title = models.CharField(_('title'), max_length=256, blank=True, null=True)
     air_date = models.DateField(_('air date'), blank=True, null=True)
@@ -101,9 +108,13 @@ class Episode(BaseModel):
 
     def __init__(self, **kwargs):
         super().__init__()
+        self.filepath = kwargs.get('filepath')
         self.number = kwargs.get('number')
         self.title = kwargs.get('title')
         self.air_date = kwargs.get('air_date')
         self.tv_audience_label = kwargs.get('tv_audience_label')
         self.tv_content_label = kwargs.get('tv_content_label')
         self.poster_image = kwargs.get('poster_image')
+
+    def __str__(self):
+        return self.title

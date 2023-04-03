@@ -21,6 +21,7 @@ def test_credit_serializer(jeff_bridges):
 def test_tag_serializer(classics):
     serializer = TagSerializer(instance=classics)
     assert serializer.data['name'] == 'Classics'
+    assert serializer.data['description'] == 'Movies Ernest Cline has seen.'
 
 
 def test_movie_serializer(big_lebowski):

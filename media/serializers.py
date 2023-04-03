@@ -24,7 +24,8 @@ class CreditSerializer(serializers.ModelSerializer):
 
 class TagSerializer(serializers.ModelSerializer):
     name = serializers.CharField(required=True, max_length=128)
+    description = serializers.CharField(required=False, allow_null=True)
 
     class Meta:
         model = Tag
-        fields = ['name']
+        fields = ['name', 'description']

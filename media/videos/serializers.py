@@ -4,6 +4,7 @@ from media.videos.models import Video
 
 
 class VideoSerializer(serializers.ModelSerializer):
+    filepath = serializers.CharField(required=True, max_length=1024)
     title = serializers.CharField(required=True, max_length=256)
     sort_title = serializers.CharField(required=True, max_length=256)
     release_date = serializers.DateField(required=False, allow_null=True)
@@ -13,4 +14,4 @@ class VideoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Video
-        fields = ['title', 'sort_title', 'release_date', 'summary', 'poster_image', 'country']
+        fields = ['filepath', 'title', 'sort_title', 'release_date', 'summary', 'poster_image', 'country']

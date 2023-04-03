@@ -26,6 +26,7 @@ class MovieManager(models.Manager):
         service = TheMovieDatabaseService()
         id = service.retrieve_id(kind='movie', **kwargs)
         kwargs = service.retrieve_metadata(kind='movie', id=id)
+        kwargs['filepath'] = filepath
         genres = kwargs.pop('genres')
         credits = kwargs.pop('credits')
         movie = self.create(**kwargs)
@@ -50,6 +51,7 @@ class MovieManager(models.Manager):
 
 
 class Movie(BaseModel):
+    filepath = models.CharField(_('filepath'), max_length=1024, blank=True, null=True)
     title = models.CharField(_('title'), max_length=256, null=False)
     sort_title = models.CharField(_('sort title'), max_length=256, null=False)
     alternate_title = models.CharField(_('alternate title'), max_length=256, blank=True, null=True)
@@ -76,6 +78,7 @@ class Movie(BaseModel):
 
     def __init__(self, **kwargs):
         super().__init__()
+        self.filepath = kwargs.get('filepath')
         self.title = kwargs.get('title')
         self.sort_title = kwargs.get('sort_title') if kwargs.get('sort_title') else generate_sort_title(self.title)
         self.alternate_title = kwargs.get('alternate_title')
@@ -86,3 +89,6 @@ class Movie(BaseModel):
         self.summary = kwargs.get('summary')
         self.poster_image = kwargs.get('poster_image')
         self.country = kwargs.get('country')
+
+    def __str__(self):
+        return f'{self.title} ({self.release_date.year})'

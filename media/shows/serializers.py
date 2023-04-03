@@ -6,6 +6,7 @@ from media.shows.models import Show, Season, Episode
 
 
 class EpisodeSerializer(serializers.ModelSerializer):
+    filepath = serializers.CharField(required=True, max_length=1024)
     number = serializers.IntegerField(required=True)
     title = serializers.CharField(required=False, max_length=256, allow_null=True)
     air_date = serializers.DateField(required=False, allow_null=True)
@@ -17,7 +18,8 @@ class EpisodeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Episode
-        fields = ['number', 'title', 'air_date', 'tv_audience_label', 'tv_content_label', 'poster_image', 'credits']
+        fields = ['filepath', 'number', 'title', 'air_date', 'tv_audience_label', 'tv_content_label',
+                  'poster_image', 'credits']
 
 
 class SeasonSerializer(serializers.ModelSerializer):
