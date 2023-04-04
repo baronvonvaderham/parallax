@@ -92,18 +92,19 @@ class Movie(BaseModel):
         verbose_name_plural = _('tmdb')
 
     def __init__(self, *args, **kwargs):
-        super().__init__()
-        self.filepath = kwargs.get('filepath')
-        self.title = kwargs.get('title')
-        self.sort_title = kwargs.get('sort_title') if kwargs.get('sort_title') else generate_sort_title(self.title)
-        self.alternate_title = kwargs.get('alternate_title')
-        self.release_date = kwargs.get('release_date')
-        self.studio = kwargs.get('studio')
-        self.movie_rating = kwargs.get('movie_rating')
-        self.tagline = kwargs.get('tagline')
-        self.summary = kwargs.get('summary')
-        self.poster_image = kwargs.get('poster_image')
-        self.country = kwargs.get('country')
+        super().__init__(*args)
+        if kwargs:
+            self.filepath = kwargs.get('filepath')
+            self.title = kwargs.get('title')
+            self.sort_title = kwargs.get('sort_title') if kwargs.get('sort_title') else generate_sort_title(self.title)
+            self.alternate_title = kwargs.get('alternate_title')
+            self.release_date = kwargs.get('release_date')
+            self.studio = kwargs.get('studio')
+            self.movie_rating = kwargs.get('movie_rating')
+            self.tagline = kwargs.get('tagline')
+            self.summary = kwargs.get('summary')
+            self.poster_image = kwargs.get('poster_image')
+            self.country = kwargs.get('country')
 
     def __str__(self):
-        return f'{self.title} ({self.release_date[:4]})'
+        return f'{self.title} ({self.release_date.year})'
