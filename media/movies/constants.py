@@ -1,3 +1,5 @@
+# Choices for movie ratings
+# TODO: Add support for non-MPAA rating schemes?
 MOVIE_RATINGS = [
     ('G', 'G'),
     ('PG', 'PG'),
@@ -7,6 +9,7 @@ MOVIE_RATINGS = [
     ('X', 'X'),
 ]
 
+# Mapping fields from TMDB to the media.movies.models.Movie fields
 MOVIE_METADATA_FIELD_MAPPING = {
     'title': 'title',
     'alternate_title': 'original_title',

@@ -52,7 +52,7 @@ def test_retrieve_metadata(tmdb_service, jeff_bridges):
 
 def test_create_movie_with_metadata():
     filepath = os.path.abspath('tests/fixtures/samples/The Big Lebowski (1998).mp4')
-    movie = Movie.objects.create_from_file(filepath)
+    movie = Movie.objects.create_from_file(filepath=filepath)
     assert movie.filepath == filepath
     assert movie.genres.count() == 2
     assert movie.credits.count() == 168

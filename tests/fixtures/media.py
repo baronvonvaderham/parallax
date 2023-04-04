@@ -2,6 +2,7 @@ from datetime import datetime
 import pytest
 
 
+@pytest.mark.django_db
 @pytest.fixture
 def create_genre():
     """
@@ -15,16 +16,19 @@ def create_genre():
     return _create_genre
 
 
+@pytest.mark.django_db
 @pytest.fixture
 def comedy(create_genre):
     return create_genre(name='Comedy')
 
 
+@pytest.mark.django_db
 @pytest.fixture
 def crime(create_genre):
     return create_genre(name='Crime')
 
 
+@pytest.mark.django_db
 @pytest.fixture
 def create_credit():
     """
@@ -38,6 +42,7 @@ def create_credit():
     return _create_credit
 
 
+@pytest.mark.django_db
 @pytest.fixture
 def jeff_bridges(create_credit):
     return create_credit(name='Jeff Bridges', role='The Dude')
@@ -48,6 +53,7 @@ def billy_west(create_credit):
     return create_credit(name='Billy West', role='Douglas \'Doug\' Yancy Funnie')
 
 
+@pytest.mark.django_db
 @pytest.fixture
 def create_tag():
     """
@@ -61,16 +67,19 @@ def create_tag():
     return _create_tag
 
 
+@pytest.mark.django_db
 @pytest.fixture
 def classics(create_tag):
     return create_tag(name='Classics', description='Movies Ernest Cline has seen.')
 
 
+@pytest.mark.django_db
 @pytest.fixture
 def stoner_movies(create_tag):
     return create_tag(name='Stoner Movies')
 
 
+@pytest.mark.django_db
 @pytest.fixture
 def create_movie():
     """
@@ -84,6 +93,7 @@ def create_movie():
     return _create_movie
 
 
+@pytest.mark.django_db
 @pytest.fixture
 def big_lebowski(create_movie, movie_library, comedy, crime, jeff_bridges, classics, stoner_movies):
     summary = \

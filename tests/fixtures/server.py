@@ -1,7 +1,5 @@
 import pytest
 
-from server.models import Server
-
 
 @pytest.fixture
 def create_server():

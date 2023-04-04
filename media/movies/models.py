@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from .constants import MOVIE_RATINGS
 from core.models import BaseModel
 from library.models import MovieLibrary
-from media.exceptions import InvalidFilepathError
+from media.exceptions import InvalidFilepathError, DuplicateMediaError
 from media.constants import VALID_VIDEO_EXTENSIONS
 from media.models import Genre, Credit, Tag
 from media.utils import generate_sort_title
@@ -18,6 +18,8 @@ class MovieManager(models.Manager):
     def create_from_file(self, filepath):
         if not self._validate_filepath(filepath=filepath):
             raise InvalidFilepathError(filepath)
+        if self._check_if_movie_exists(filepath):
+            raise DuplicateMediaError(filepath=filepath, media_type='Movie')
         title, year = self._get_title_year_from_filepath(filepath)
         kwargs = {
             'query': title,
@@ -38,10 +40,23 @@ class MovieManager(models.Manager):
 
     @staticmethod
     def _validate_filepath(filepath):
+        """
+        Validates the filepath by checking if the file extension is a supported type.
+        """
         return os.path.splitext(filepath)[-1] in VALID_VIDEO_EXTENSIONS
 
     @staticmethod
+    def _check_if_movie_exists(filepath):
+        movie = Movie.objects.filter(filepath=filepath).first()
+        if isinstance(movie, Movie):
+            return True
+        return False
+
+    @staticmethod
     def _get_title_year_from_filepath(filepath):
+        """
+        Extracts the title and year (if present) from a properly formatted filepath string.
+        """
         parts = os.path.splitext(filepath)[0].split('/')
         try:
             title, year = parts[-1].split('(')
@@ -65,7 +80,7 @@ class Movie(BaseModel):
 
     # Library relationship can be null so the movie can be re-claimed by a new library,
     # saving having to retrieve metadata again.
-    library = models.ForeignKey(MovieLibrary, blank=True, null=True, on_delete=models.SET_NULL)
+    library = models.ForeignKey(MovieLibrary, blank=True, null=True, on_delete=models.SET_NULL, related_name='movies')
     genres = models.ManyToManyField(Genre)
     credits = models.ManyToManyField(Credit)
     tags = models.ManyToManyField(Tag)
@@ -76,7 +91,13 @@ class Movie(BaseModel):
         verbose_name = _('movie')
         verbose_name_plural = _('tmdb')
 
-    def __init__(self, **kwargs):
+    def from_db(self, db, field_names, values):
+        print(db)
+        print(field_names)
+        print(values)
+        return super().from_db(db=db, field_names=field_names, values=values)
+
+    def __init__(self, *args, **kwargs):
         super().__init__()
         self.filepath = kwargs.get('filepath')
         self.title = kwargs.get('title')
@@ -91,4 +112,4 @@ class Movie(BaseModel):
         self.country = kwargs.get('country')
 
     def __str__(self):
-        return f'{self.title} ({self.release_date.year})'
+        return f'{self.title} ({self.release_date[:4]})'

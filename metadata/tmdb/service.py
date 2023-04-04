@@ -71,15 +71,24 @@ class TheMovieDatabaseService(object):
         return self._extract_metadata(json.loads(response.content))
 
     def retrieve_credits(self, kind, id):
+        """
+        Method to retrieve the credits associated wth an item.
+        """
         path = self._get_path(kind=kind, id=id, method='credits')
         kwargs = {'api_key': self.api_key}
         response = self._get(uri=path, params=kwargs)
         return self._extract_credits(json.loads(response.content))
 
     def _get(self, uri, params):
+        """
+        Method to execute get request against TMDB endpoint.
+        """
         return requests.get(uri, params=params, headers=self.request_headers)
 
     def _get_path(self, kind, method=None, id=None):
+        """
+        Method to construct the URI of the endpoint against which the query is being run.
+        """
         uri = self.base_uri
         if self.PATHS.get(method):
             uri += self.PATHS.get(method)
@@ -96,6 +105,9 @@ class TheMovieDatabaseService(object):
         return uri
 
     def _extract_metadata(self, data):
+        """
+        Helper method to map TMDB data to model attributes here.
+        """
         metadata = {}
         for field in MOVIE_METADATA_FIELD_MAPPING.keys():
             if field in self.LIST_FIELDS:
@@ -113,6 +125,9 @@ class TheMovieDatabaseService(object):
 
     @staticmethod
     def _extract_credits(data):
+        """
+        Helper method to extract Credits out of the TMDB response data.
+        """
         credits = []
         for member in data.get('cast'):
             credits.append({'name': member.get('name'), 'role': member.get('character'), 'type': 'cast'})
@@ -122,6 +137,10 @@ class TheMovieDatabaseService(object):
 
     @staticmethod
     def _append_rating(metadata, data):
+        """
+        Helper method to extract MPAA rating values from TMDB's response data and append
+        it to the metadata dict used to create models here.
+        """
         results = data.get('release_dates').get('results')
         rating = None
         for result in results:
@@ -132,11 +151,19 @@ class TheMovieDatabaseService(object):
 
     @staticmethod
     def _append_genres(metadata, data):
+        """
+        Helper method to extract Genre values and place them in the correct location
+        within the metadata dict used to create models here.
+        """
         genres = [{'name': genre.get('name')} for genre in data.get('genres')]
         metadata['genres'] = genres
         return metadata
 
     def _append_credits(self, metadata, data):
+        """
+        Helper method to put the list of credits extracted in self._extract_credits() into a usable
+        form in the correct location within the metadata dict used to create models here.
+        """
         credits = self.retrieve_credits(kind='movie', id=data.get('id'))
         metadata['credits'] = credits
         return metadata
