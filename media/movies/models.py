@@ -91,12 +91,6 @@ class Movie(BaseModel):
         verbose_name = _('movie')
         verbose_name_plural = _('tmdb')
 
-    def from_db(self, db, field_names, values):
-        print(db)
-        print(field_names)
-        print(values)
-        return super().from_db(db=db, field_names=field_names, values=values)
-
     def __init__(self, *args, **kwargs):
         super().__init__()
         self.filepath = kwargs.get('filepath')

@@ -6,6 +6,7 @@ omit =
     *migrations*
     *settings*
     *wsgi.py
+    *asgi.py
     *manage.py
     *test_*
     *fixtures/*
