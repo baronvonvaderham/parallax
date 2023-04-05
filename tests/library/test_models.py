@@ -23,6 +23,13 @@ def test_add_show_from_directory(show_library):
     filepath = os.path.abspath('tests/fixtures/samples/Doug')
     added = show_library.add_new_show_from_directory(filepath=filepath)
     assert added
+    shows = show_library.shows.all()
+    assert len(shows) == 1
+    doug = shows[0]
+    assert doug.title == 'Doug'
+    seasons = doug.seasons.all()
+    assert len(seasons) == 2
+
 
 def test_add_existing_show(show_library, doug):
     added = show_library.add_existing_show(doug)

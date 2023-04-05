@@ -77,6 +77,7 @@ class ShowLibrary(Library):
         # Step 1) Create the Show with its metadata.
         try:
             show = Show.objects.create_from_directory(filepath=filepath)
+            self.shows.add(show)
         except DuplicateMediaError as e:
             # If a duplicate is found, simple add that existing movie instead
             logger.warning(f'Movie already exists, adding existing movie to library.')
@@ -92,10 +93,8 @@ class ShowLibrary(Library):
                 continue
             season_num = int(subdir_name.split(' ')[-1])
             season = Season.objects.create_season(show=show, season_number=season_num)
-
             # # Step 3) Create the episodes for each season.
             # for file in os.listdir(season_path):
-
         return True
 
     def add_existing_show(self, show):

@@ -202,6 +202,7 @@ def doug_bags_a_neematoad(create_episode, season1, doug, billy_west):
         'title': 'Doug Bags a Neematoad',
         'air_date': datetime(year=1991, month=8, day=18).date(),
         'tv_audience_label': 'TV-Y7',
+        'season': season1
     }
     episode = create_episode(**kwargs)
     episode.credits.set([billy_west])
