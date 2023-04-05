@@ -9,7 +9,7 @@ from library.models import MovieLibrary
 from media.exceptions import InvalidFilepathError, DuplicateMediaError
 from media.constants import VALID_VIDEO_EXTENSIONS
 from media.models import Genre, Credit, Tag
-from media.utils import generate_sort_title
+from media.utils import generate_sort_title, get_title_year_from_filepath
 from metadata.tmdb.service import TheMovieDatabaseService
 
 
@@ -20,7 +20,7 @@ class MovieManager(models.Manager):
             raise InvalidFilepathError(filepath)
         if self._check_if_movie_exists(filepath):
             raise DuplicateMediaError(filepath=filepath, media_type='Movie')
-        title, year = self._get_title_year_from_filepath(filepath)
+        title, year = get_title_year_from_filepath(filepath=filepath)
         kwargs = {
             'query': title,
             'year': year,
@@ -51,18 +51,6 @@ class MovieManager(models.Manager):
         if isinstance(movie, Movie):
             return True
         return False
-
-    @staticmethod
-    def _get_title_year_from_filepath(filepath):
-        """
-        Extracts the title and year (if present) from a properly formatted filepath string.
-        """
-        parts = os.path.splitext(filepath)[0].split('/')
-        try:
-            title, year = parts[-1].split('(')
-        except ValueError:
-            return parts[-1], None
-        return ' '.join(title.split(' ')[:-1]), year.replace(')', '') if year else None
 
 
 class Movie(BaseModel):

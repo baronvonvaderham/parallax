@@ -17,3 +17,13 @@ def test_add_movie_from_file(movie_library):
     filepath = os.path.abspath('tests/fixtures/samples/The Big Lebowski (1998).mp4')
     added = movie_library.add_movie_from_file(filepath=filepath)
     assert added
+
+
+def test_add_show_from_directory(show_library):
+    filepath = os.path.abspath('tests/fixtures/samples/Doug')
+    added = show_library.add_new_show_from_directory(filepath=filepath)
+    assert added
+
+def test_add_existing_show(show_library, doug):
+    added = show_library.add_existing_show(doug)
+    assert added

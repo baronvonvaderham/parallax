@@ -38,15 +38,16 @@ class ShowSerializer(serializers.ModelSerializer):
     sort_title = serializers.CharField(required=False, max_length=256, allow_null=True)
     alternate_title = serializers.CharField(required=False, max_length=256, allow_null=True)
     premiere_date = serializers.DateField(required=False, allow_null=True)
-    network = serializers.CharField(required=False, max_length=56, allow_null=True)
+    network = serializers.ListField(child=serializers.CharField(max_length=56), required=False,  allow_null=True)
     summary = serializers.CharField(required=False, allow_null=True)
     poster_image = serializers.CharField(required=False, max_length=128, allow_null=True)
     country = serializers.ListField(child=serializers.CharField(max_length=8), required=False, allow_null=True)
+    tmdb_id = serializers.IntegerField(required=False, allow_null=False)
 
-    genres = GenreSerializer(many=True)
-    tags = TagSerializer(many=True)
+    genres = GenreSerializer(many=True, required=False)
+    tags = TagSerializer(many=True, required=False)
 
     class Meta:
         model = Show
         fields = ['title', 'sort_title', 'alternate_title', 'premiere_date', 'network', 'summary',
-                  'poster_image', 'country', 'genres', 'tags']
+                  'poster_image', 'country', 'tmdb_id', 'genres', 'tags']

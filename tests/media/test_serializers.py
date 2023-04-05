@@ -58,7 +58,7 @@ def test_show_serializer(doug):
     assert serializer.data['sort_title'] == 'Doug'
     assert not serializer.data['alternate_title']
     assert serializer.data['premiere_date'] == datetime.datetime(year=1991, month=8, day=11).date().isoformat()
-    assert serializer.data['network'] == 'Nickelodeon'
+    assert serializer.data['network'] == ['ABC', 'Nickelodeon']
     assert serializer.data['summary'] == summary
     assert set([genre.get('name') for genre in serializer.data['genres']]) == {'Comedy'}
     assert set([tag.get('name') for tag in serializer.data['tags']]) == {'Classics'}

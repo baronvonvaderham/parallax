@@ -7,3 +7,4 @@ djangorestframework
 django-languages-plus
 psycopg2
 pytest-django
+tvdb_v4_official

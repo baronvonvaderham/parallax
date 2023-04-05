@@ -2,6 +2,7 @@ import json
 import requests
 
 from media.movies.constants import MOVIE_METADATA_FIELD_MAPPING
+from media.shows.constants import TV_METADATA_FIELD_MAPPING, SEASON_METADATA_FIELD_MAPPING
 from parallax import settings
 
 
@@ -19,10 +20,14 @@ class TheMovieDatabaseService(object):
         'person': '/person',
         'tv': '/tv',
     }
-    LIST_FIELDS = [
+    MOVIE_LIST_FIELDS = [
         'studio',
         'country',
         'genres',
+    ]
+    TV_LIST_FIELDS = [
+        'genres',
+        'network',
     ]
 
     def __init__(self):
@@ -61,14 +66,25 @@ class TheMovieDatabaseService(object):
         results = self.search(kind=kind, **kwargs)
         return results[0].get('id')
 
-    def retrieve_metadata(self, kind, id):
+    def retrieve_metadata(self, kind, id, season_num=None):
         """
         Method to retrieve full details of an item.
         """
         path = self._get_path(kind=kind, id=id)
+        if kind == 'tv' and season_num and id:
+            path += f'/season/{season_num}'
         kwargs = {'api_key': self.api_key}
         response = self._get(uri=path, params=kwargs)
-        return self._extract_metadata(json.loads(response.content))
+        if kind == 'movie':
+            metadata = self._extract_movie_metadata(json.loads(response.content))
+        elif kind == 'tv':
+            if season_num:
+                metadata = self._extract_season_metadata(json.loads(response.content))
+            else:
+                metadata = self._extract_tv_metadata(json.loads(response.content))
+        else:
+            return None
+        return metadata
 
     def retrieve_credits(self, kind, id):
         """
@@ -104,13 +120,13 @@ class TheMovieDatabaseService(object):
             uri += '/credits'
         return uri
 
-    def _extract_metadata(self, data):
+    def _extract_movie_metadata(self, data):
         """
-        Helper method to map TMDB data to model attributes here.
+        Helper method to map TMDB movie data to model attributes here.
         """
         metadata = {}
         for field in MOVIE_METADATA_FIELD_MAPPING.keys():
-            if field in self.LIST_FIELDS:
+            if field in self.MOVIE_LIST_FIELDS and data.get(MOVIE_METADATA_FIELD_MAPPING[field]):
                 if field == 'country':
                     d = [item.get('iso_3166_1') for item in data.get(MOVIE_METADATA_FIELD_MAPPING[field])]
                 else:
@@ -121,6 +137,30 @@ class TheMovieDatabaseService(object):
         metadata = self._append_rating(metadata, data)
         metadata = self._append_genres(metadata, data)
         metadata = self._append_credits(metadata, data)
+        return metadata
+
+    def _extract_tv_metadata(self, data):
+        """
+        Helper method to map TMDB tv show data to model attributes here.
+        """
+        metadata = {}
+        for field in TV_METADATA_FIELD_MAPPING.keys():
+            if field in self.TV_LIST_FIELDS and data.get(TV_METADATA_FIELD_MAPPING[field]):
+                d = [item.get('name') for item in data.get(TV_METADATA_FIELD_MAPPING[field])]
+                metadata[field] = d
+            else:
+                metadata[field] = data.get(TV_METADATA_FIELD_MAPPING[field])
+        metadata = self._append_genres(metadata, data)
+        return metadata
+
+    @staticmethod
+    def _extract_season_metadata(data):
+        """
+        Helper method to map TMDB tv season data to model attributes here.
+        """
+        metadata = {}
+        for field in SEASON_METADATA_FIELD_MAPPING.keys():
+            metadata[field] = data.get(SEASON_METADATA_FIELD_MAPPING[field])
         return metadata
 
     @staticmethod

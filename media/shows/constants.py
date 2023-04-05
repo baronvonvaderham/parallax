@@ -21,3 +21,20 @@ TV_CONTENT_LABEL = [
     ('SSC', 'SSC'),
     ('RP', 'RP'),
 ]
+
+TV_METADATA_FIELD_MAPPING = {
+    'title': 'name',
+    'alternate_title': 'original_name',
+    'premiere_date': 'first_air_date',
+    'network': 'networks',
+    'summary': 'overview',
+    'poster_image': 'poster_path',
+    'country': 'origin_country',
+}
+
+SEASON_METADATA_FIELD_MAPPING = {
+    'number': 'season_number',
+    'start_data': 'air_date',
+    'summary': 'overview',
+    'poster_image': 'poster_path',
+}

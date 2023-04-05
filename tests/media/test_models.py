@@ -1,9 +1,10 @@
 import os
 import pytest
 
-from media.exceptions import InvalidFilepathError
-from media.movies.models import Movie, MovieManager
+from media.movies.models import Movie
 from media.movies.serializers import MovieSerializer
+from media.shows.serializers import ShowSerializer
+from media.utils import get_title_year_from_filepath
 
 
 def test_retrieve_id(tmdb_service):
@@ -17,19 +18,19 @@ def test_retrieve_id(tmdb_service):
 
 def test_title_year_from_file():
     filepath = os.path.abspath('tests/fixtures/samples/The Big Lebowski (1998).mp4')
-    title, year = MovieManager._get_title_year_from_filepath(filepath=filepath)
+    title, year = get_title_year_from_filepath(filepath=filepath)
     assert title == 'The Big Lebowski'
     assert year == '1998'
 
 
 def test_title_year_from_file__no_year():
     filepath = os.path.abspath('tests/fixtures/samples/Not A Movie.crap')
-    title, year = MovieManager._get_title_year_from_filepath(filepath=filepath)
+    title, year = get_title_year_from_filepath(filepath=filepath)
     assert title == 'Not A Movie'
     assert year is None
 
 
-def test_retrieve_metadata(tmdb_service, jeff_bridges):
+def test_retrieve_movie_metadata(tmdb_service, jeff_bridges):
 
     kwargs = {
         'query': 'The Big Lebowski',
@@ -58,3 +59,17 @@ def test_create_movie_with_metadata():
     assert movie.credits.count() == 168
     assert movie.title == 'The Big Lebowski'
     assert movie.sort_title == 'Big Lebowski, The'
+
+
+def test_retrieve_show_metadata(tmdb_service):
+    kwargs = {
+        'query': 'Doug',
+        'year': '1991'
+    }
+    results = tmdb_service.search(kind='tv', **kwargs)
+    show_id = results[0].get('id')
+    metadata = tmdb_service.retrieve_metadata(kind='tv', id=show_id)
+    metadata['filepath'] = os.path.abspath('tests/fixtures/samples/Doug')
+    serializer = ShowSerializer(data=metadata)
+    assert serializer.is_valid()
+    assert serializer.validated_data.get('genres') == [{'name': 'Animation'}, {'name': 'Comedy'}, {'name': 'Kids'}]

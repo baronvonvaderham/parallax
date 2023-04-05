@@ -142,7 +142,7 @@ def doug(create_show, show_library, comedy, classics):
     kwargs = {
         'title': 'Doug',
         'premiere_date': datetime(year=1991, month=8, day=11).date(),
-        'network': 'Nickelodeon',
+        'network': ['ABC', 'Nickelodeon'],
         'summary': summary,
         'library': show_library,
     }

@@ -1,3 +1,5 @@
+import os
+
 IGNORED_TITLE_WORDS = ['a', 'an', 'the']
 
 
@@ -9,3 +11,15 @@ def generate_sort_title(title):
         return ' '.join(title_words) + f', {removed_word}'
     else:
         return title
+
+
+def get_title_year_from_filepath(filepath):
+    """
+    Extracts the title and year (if present) from a properly formatted filepath string.
+    """
+    parts = os.path.splitext(filepath)[0].split('/')
+    try:
+        title, year = parts[-1].split('(')
+    except ValueError:
+        return parts[-1], None
+    return ' '.join(title.split(' ')[:-1]), year.replace(')', '') if year else None
