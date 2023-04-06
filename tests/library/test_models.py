@@ -50,3 +50,9 @@ def test_add_show_from_directory(show_library):
 def test_add_existing_show(show_library, doug):
     added = show_library.add_existing_show(doug)
     assert added
+
+
+def test_add_video_from_file(video_library):
+    filepath = os.path.abspath('tests/fixtures/samples/My Home Movie.mp4')
+    added = video_library.add_video_from_file(filepath=filepath)
+    assert added

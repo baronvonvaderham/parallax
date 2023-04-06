@@ -7,16 +7,15 @@ from .constants import MOVIE_RATINGS
 from core.models import BaseModel
 from library.models import MovieLibrary
 from media.exceptions import InvalidFilepathError, DuplicateMediaError
-from media.constants import VALID_VIDEO_EXTENSIONS
 from media.models import Genre, Credit, Tag
-from media.utils import generate_sort_title, get_title_year_from_filepath
+from media.utils import generate_sort_title, get_title_year_from_filepath, validate_filepath
 from metadata.tmdb.service import TheMovieDatabaseService
 
 
 class MovieManager(models.Manager):
 
     def create_from_file(self, filepath):
-        if not self._validate_filepath(filepath=filepath):
+        if not validate_filepath(filepath=filepath):
             raise InvalidFilepathError(filepath)
         if self._check_if_movie_exists(filepath):
             raise DuplicateMediaError(filepath=filepath, media_type='Movie')
@@ -37,13 +36,6 @@ class MovieManager(models.Manager):
         movie.genres.add(*genre_objects)
         movie.credits.add(*credit_objects)
         return movie
-
-    @staticmethod
-    def _validate_filepath(filepath):
-        """
-        Validates the filepath by checking if the file extension is a supported type.
-        """
-        return os.path.splitext(filepath)[-1] in VALID_VIDEO_EXTENSIONS
 
     @staticmethod
     def _check_if_movie_exists(filepath):

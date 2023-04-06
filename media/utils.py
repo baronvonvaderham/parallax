@@ -1,5 +1,7 @@
 import os
 
+from media.constants import VALID_VIDEO_EXTENSIONS
+
 IGNORED_TITLE_WORDS = ['a', 'an', 'the']
 
 
@@ -23,3 +25,10 @@ def get_title_year_from_filepath(filepath):
     except ValueError:
         return parts[-1], None
     return ' '.join(title.split(' ')[:-1]), year.replace(')', '') if year else None
+
+
+def validate_filepath(filepath):
+    """
+    Validates the filepath by checking if the file extension is a supported type.
+    """
+    return os.path.splitext(filepath)[-1] in VALID_VIDEO_EXTENSIONS

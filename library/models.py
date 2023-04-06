@@ -62,6 +62,7 @@ class MovieLibrary(Library):
             return True
         except Exception as e:
             logger.exception(f'Exception while attempting to add movie {movie} to library {self}: {e}')
+            return False
 
 
 class ShowLibraryManager(models.Manager):
@@ -72,6 +73,10 @@ class ShowLibrary(Library):
     objects = ShowLibraryManager()
 
     def add_new_show_from_directory(self, filepath):
+        """
+        Adds a new show to the library at the given filepath. Also adds the seasons (from subfolders)
+        and then adds the episodes for each of those seasons (from filenames).
+        """
         from media.shows.models import Show, Season, Episode
 
         # Step 1) Create the Show with its metadata.
@@ -112,13 +117,39 @@ class ShowLibrary(Library):
             return True
         except Exception as e:
             logger.exception(f'Exception while attempting to add show {show} to library {self}: {e}')
+            return False
 
 
 class VideoLibraryManager(models.Manager):
-
-    def add_video_from_file(self, filepath):
-        pass
+    pass
 
 
 class VideoLibrary(Library):
     objects = VideoLibraryManager()
+
+    def add_video_from_file(self, filepath):
+        """
+        Adds a new video to the library from the given filepath.
+
+        TODO: Add automatic import of metadata from the file's EXIF data.
+        """
+        from media.videos.models import Video
+
+        try:
+            video = Video.objects.create_video(filepath=filepath)
+            return self.add_existing_video(video)
+        except InvalidFilepathError as e:
+            logger.error(f'Unable to add video to library: {e}')
+        except DuplicateMediaError as e:
+            # If a duplicate is found, simple add that existing movie instead
+            logger.warning(f'Movie already exists, adding existing movie to library.')
+            video = Video.objects.get(filepath=filepath)
+            return self.add_existing_video(video=video)
+
+    def add_existing_video(self, video):
+        try:
+            self.videos.add(video)
+            return True
+        except Exception as e:
+            logger.exception(f'Exception while attempting to add video {video} to library {self}: {e}')
+            return False

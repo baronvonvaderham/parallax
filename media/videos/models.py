@@ -1,14 +1,41 @@
+import datetime
+import os
+
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from core.models import BaseModel
 from library.models import VideoLibrary
+from media.exceptions import DuplicateMediaError, InvalidFilepathError
 from media.models import Genre, Credit, Tag
-from media.utils import generate_sort_title
+from media.utils import generate_sort_title, validate_filepath, get_title_year_from_filepath
 
 
 class VideoManager(models.Manager):
-    pass
+
+    def create_video(self, filepath):
+        if not validate_filepath(filepath=filepath):
+            raise InvalidFilepathError(filepath)
+        if self._check_if_video_exists(filepath=filepath):
+            raise DuplicateMediaError(media_type='Video', filepath=filepath)
+        kwargs = self._construct_video_data(filepath=filepath)
+        video = self.create(**kwargs)
+        return video
+
+    @staticmethod
+    def _check_if_video_exists(filepath):
+        video = Video.objects.filter(filepath=filepath).first()
+        if isinstance(video, Video):
+            return True
+        return False
+
+    @staticmethod
+    def _construct_video_data(filepath):
+        title, year = get_title_year_from_filepath(filepath=filepath)
+        data = {'title': title}
+        if year:
+            data['release_date']: datetime.date(year=year, month=1, day=1)
+        return data
 
 
 class Video(BaseModel):
@@ -20,7 +47,7 @@ class Video(BaseModel):
     poster_image = models.CharField(_('poster image'), max_length=128, blank=True, null=True)
     country = models.CharField(_('country'), max_length=8, blank=True, null=True)
 
-    library = models.ForeignKey(VideoLibrary, blank=True, null=True, on_delete=models.PROTECT)
+    library = models.ForeignKey(VideoLibrary, blank=True, null=True, on_delete=models.PROTECT, related_name='videos')
     genres = models.ManyToManyField(Genre)
     credits = models.ManyToManyField(Credit)
     tags = models.ManyToManyField(Tag)
