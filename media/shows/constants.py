@@ -34,7 +34,14 @@ TV_METADATA_FIELD_MAPPING = {
 
 SEASON_METADATA_FIELD_MAPPING = {
     'number': 'season_number',
-    'start_data': 'air_date',
+    'start_date': 'air_date',
     'summary': 'overview',
+    'poster_image': 'poster_path',
+}
+
+EPISODE_METADATA_FIELD_MAPPING = {
+    'number': 'episode_number',
+    'title': 'name',
+    'air_date': 'air_date',
     'poster_image': 'poster_path',
 }

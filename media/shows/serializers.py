@@ -14,7 +14,7 @@ class EpisodeSerializer(serializers.ModelSerializer):
     tv_content_label = serializers.ChoiceField(choices=TV_CONTENT_LABEL, required=False, allow_null=True)
     poster_image = serializers.CharField(required=False, max_length=128, allow_null=True)
 
-    credits = CreditSerializer(many=True)
+    credits = CreditSerializer(many=True, required=False)
 
     class Meta:
         model = Episode

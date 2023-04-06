@@ -65,10 +65,10 @@ def test_show_serializer(doug):
 
 
 def test_season_serializer(season1):
-    serialzier = SeasonSerializer(instance=season1)
-    assert serialzier.data['number'] == 1
-    assert serialzier.data['start_date'] == datetime.datetime(year=1991, month=8, day=11).date().isoformat()
-    assert serialzier.data['end_date'] == datetime.datetime(year=1991, month=12, day=8).date().isoformat()
+    serializer = SeasonSerializer(instance=season1)
+    assert serializer.data['number'] == 1
+    assert serializer.data['start_date'] == datetime.datetime(year=1991, month=8, day=11).date().isoformat()
+    assert serializer.data['end_date'] == datetime.datetime(year=1991, month=12, day=8).date().isoformat()
 
 
 def test_episode_serializer(doug_bags_a_neematoad):

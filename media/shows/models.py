@@ -83,17 +83,23 @@ class Show(BaseModel):
                 self.tags = kwargs.get('tags')
 
     def __str__(self):
-        return f'{self.title} ({self.premiere_date.year})'
+        return self.title
 
 
 class SeasonManager(models.Manager):
 
     def create_season(self, season_number, show):
+        if self._check_if_season_exists(show=show, season_num=season_number):
+            raise DuplicateMediaError(media_type='Season', show=show)
         service = TheMovieDatabaseService()
         kwargs = service.retrieve_metadata(kind='tv', id=show.tmdb_id, season_num=season_number)
         kwargs['show'] = show
         season = self.create(**kwargs)
         return season
+
+    @staticmethod
+    def _check_if_season_exists(show, season_num):
+        return season_num in [season.number for season in show.seasons.all()]
 
 
 class Season(BaseModel):
@@ -120,11 +126,24 @@ class Season(BaseModel):
             self.show = kwargs.get('show')
 
     def __str__(self):
-        return f'{self.show.name} - Season {self.number}'
+        return f'{self.show.title} - Season {self.number}'
 
 
 class EpisodeManager(models.Manager):
-    pass
+
+    def create_episode(self, episode_number, season):
+        if self._check_if_episode_exists(season=season, episode_num=episode_number):
+            raise DuplicateMediaError(media_type='Episode', show=season.show)
+        service = TheMovieDatabaseService()
+        kwargs = service.retrieve_metadata(kind='tv', id=season.show.tmdb_id, season_num=season.number,
+                                           episode_num=episode_number)
+        kwargs['season'] = season
+        episode = self.create(**kwargs)
+        return episode
+
+    @staticmethod
+    def _check_if_episode_exists(season, episode_num):
+        return episode_num in [episode.number for episode in season.episodes.all()]
 
 
 class Episode(BaseModel):

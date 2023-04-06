@@ -7,8 +7,11 @@ class InvalidFilepathError(Exception):
 
 class DuplicateMediaError(Exception):
 
-    def __init__(self, filepath, media_type):
-        self.message = f'{media_type} already exists for file provided: {filepath}'
+    def __init__(self, media_type, filepath=None, show=None, num=None):
+        if filepath:
+            self.message = f'{media_type} already exists for file provided: {filepath}'
+        else:
+            self.message = f'{media_type} {num} already exists for show {show}.'
         super().__init__(self.message)
 
 

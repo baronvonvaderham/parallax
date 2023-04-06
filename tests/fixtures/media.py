@@ -145,6 +145,7 @@ def doug(create_show, show_library, comedy, classics):
         'network': ['ABC', 'Nickelodeon'],
         'summary': summary,
         'library': show_library,
+        'tmdb_id': 384,
     }
     show = create_show(**kwargs)
     show.genres.set([comedy])
