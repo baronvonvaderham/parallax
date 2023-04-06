@@ -57,7 +57,8 @@ def test_create_season_with_metatada(doug):
 
 
 def test_create_episode_with_metadata(doug, season1):
-    episode = Episode.objects.create_episode(episode_number=1, season=season1)
+    filepath = '/parallax/tests/fixtures/samples/Doug/Season 01/01 - Doug Bags a Neematoad.mp4'
+    episode = Episode.objects.create_episode(episode_number=1, season=season1, filepath=filepath)
     assert episode.number == 1
     assert episode.air_date == '1991-08-18'
     assert episode.title == 'Doug Bags a Neematoad'

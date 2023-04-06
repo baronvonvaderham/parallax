@@ -84,18 +84,27 @@ class ShowLibrary(Library):
             show = Show.objects.get(filepath=filepath)
             return self.add_existing_show(show=show)
 
-        # Step 2) Create the seasons for the show and attach them.
-        seasons = [x[0] for x in os.walk(filepath)]
-        seasons.reverse()  # For some reason this always ends up in reverse numerical order and that bugs me
-        for season_path in seasons:
-            subdir_name = season_path.split('/')[-1].lower()
-            if not subdir_name.startswith('season') or subdir_name.startswith('series'):
-                continue
-            season_num = int(subdir_name.split(' ')[-1])
-            season = Season.objects.create_season(show=show, season_number=season_num)
-            # # Step 3) Create the episodes for each season.
-            # for file in os.listdir(season_path):
-        return True
+        try:
+            # Step 2) Create the seasons for the show and attach them.
+            seasons = [x[0] for x in os.walk(filepath)]
+            seasons.reverse()  # For some reason this always ends up in reverse numerical order and that bugs me
+            for season_path in seasons:
+                subdir_name = season_path.split('/')[-1].lower()
+                if not subdir_name.startswith('season') or subdir_name.startswith('series'):
+                    continue
+                season_num = int(subdir_name.split(' ')[-1])
+                season = Season.objects.create_season(show=show, season_number=season_num)
+                # Step 3) Create the episodes for each season.
+                episodes = os.listdir(season_path)
+                episodes.reverse()
+                for file in episodes:
+                    episode_filepath = f'{season_path}/{file}'
+                    episode_num = file.split(' ')[0]
+                    Episode.objects.create_episode(episode_number=episode_num, season=season, filepath=episode_filepath)
+            return True
+        except (DuplicateMediaError, InvalidFilepathError) as e:
+            logger.error(f'Error occurred while importing show: {e}')
+            return False
 
     def add_existing_show(self, show):
         try:
@@ -106,7 +115,9 @@ class ShowLibrary(Library):
 
 
 class VideoLibraryManager(models.Manager):
-    pass
+
+    def add_video_from_file(self, filepath):
+        pass
 
 
 class VideoLibrary(Library):

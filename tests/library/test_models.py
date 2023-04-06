@@ -20,6 +20,10 @@ def test_add_movie_from_file(movie_library):
 
 
 def test_add_show_from_directory(show_library):
+    """
+    This is a full test of all parts of a show being added from just the input of its root filepath.
+    It should automatically create the show, both associated seasons, and each episode in those season sub-folders.
+    """
     filepath = os.path.abspath('tests/fixtures/samples/Doug')
     added = show_library.add_new_show_from_directory(filepath=filepath)
     assert added
@@ -29,6 +33,18 @@ def test_add_show_from_directory(show_library):
     assert doug.title == 'Doug'
     seasons = doug.seasons.all()
     assert len(seasons) == 2
+    for season in seasons:
+        episodes = season.episodes.all()
+        if season.number == 1:
+            assert len(episodes) == 2
+            assert episodes[0].title == 'Doug Bags a Neematoad'
+            assert episodes[0].number == 1
+            assert episodes[1].title == 'Doug Can\'t Dance'
+            assert episodes[1].number == 2
+        else:
+            assert len(episodes) == 1
+            assert episodes[0].title == 'Doug Takes the Case'
+            assert episodes[0].number == 1
 
 
 def test_add_existing_show(show_library, doug):

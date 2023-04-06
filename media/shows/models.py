@@ -131,13 +131,14 @@ class Season(BaseModel):
 
 class EpisodeManager(models.Manager):
 
-    def create_episode(self, episode_number, season):
+    def create_episode(self, episode_number, season, filepath):
         if self._check_if_episode_exists(season=season, episode_num=episode_number):
             raise DuplicateMediaError(media_type='Episode', show=season.show)
         service = TheMovieDatabaseService()
         kwargs = service.retrieve_metadata(kind='tv', id=season.show.tmdb_id, season_num=season.number,
                                            episode_num=episode_number)
         kwargs['season'] = season
+        kwargs['filepath'] = filepath
         episode = self.create(**kwargs)
         return episode
 
