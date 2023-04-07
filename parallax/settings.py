@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'languages_plus',
     'psycopg2',
     'rest_framework',
+    'django_cas_ng',
 
     'core',
     'library',
@@ -64,6 +65,11 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'django_cas_ng.backends.CASBackend',
+)
 
 ROOT_URLCONF = 'parallax.urls'
 
