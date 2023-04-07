@@ -37,10 +37,11 @@ def test_add_show_from_directory(show_library):
         episodes = season.episodes.all()
         if season.number == 1:
             assert len(episodes) == 2
-            if episodes[0].number == 1:
-                assert episodes[0].title == 'Doug Bags a Neematoad'
-            if episodes[0].number == 2:
-                assert episodes[1].title == 'Doug Can\'t Dance'
+            for episode in episodes:
+                if episode.number == 1:
+                    assert episode.title == 'Doug Bags a Neematoad'
+                if episode.number == 2:
+                    assert episode.title == 'Doug Can\'t Dance'
         else:
             assert len(episodes) == 1
             assert episodes[0].title == 'Doug Takes the Case'
