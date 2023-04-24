@@ -151,3 +151,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # API CREDENTIALS
 TMDB_V3_API_KEY = env('TMDB_V3_API_KEY')
+
+# Mama-CAS settings
+CAS_SERVER_URL = env('CAS_SERVER_URL')
+CAS_VERSION = '3'
