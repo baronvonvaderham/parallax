@@ -3,7 +3,6 @@ import uuid
 
 from django.db import models
 from django.contrib.auth.base_user import AbstractBaseUser
-from django.utils.timezone import make_aware
 from django.utils.translation import gettext_lazy as _
 
 

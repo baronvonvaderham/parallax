@@ -50,6 +50,8 @@ class Server(BaseModel):
     class Meta:
         verbose_name = _('server')
         verbose_name_plural = _('servers')
+        # Owner cannot have multiple servers with the same name
+        unique_together = [['name', 'owner']]
 
     @property
     def language(self):

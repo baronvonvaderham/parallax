@@ -10,6 +10,8 @@ attrs==22.2.0
     # via pytest
 certifi==2022.12.7
     # via requests
+cffi==1.15.1
+    # via cryptography
 charset-normalizer==3.1.0
     # via requests
 coverage==6.5.0
@@ -18,20 +20,24 @@ coverage==6.5.0
     #   coveralls
 coveralls==3.3.1
     # via -r requirements.in
+cryptography==41.0.1
+    # via jwcrypto
+deprecated==1.2.14
+    # via jwcrypto
 django==4.1.7
     # via
     #   -r requirements.in
-    #   django-cas-ng
     #   django-countries-plus
     #   django-languages-plus
+    #   django-oauth-toolkit
     #   djangorestframework
-django-cas-ng==4.3.0
-    # via -r requirements.in
 django-countries-plus==2.1.0
     # via django-languages-plus
 django-environ==0.10.0
     # via -r requirements.in
 django-languages-plus==2.0.0
+    # via -r requirements.in
+django-oauth-toolkit==2.3.0
     # via -r requirements.in
 djangorestframework==3.14.0
     # via -r requirements.in
@@ -43,29 +49,29 @@ idna==3.4
     # via requests
 iniconfig==2.0.0
     # via pytest
-lxml==4.9.2
-    # via python-cas
+jwcrypto==1.5.0
+    # via django-oauth-toolkit
+oauthlib==3.2.2
+    # via django-oauth-toolkit
 packaging==23.0
     # via pytest
 pluggy==1.0.0
     # via pytest
 psycopg2==2.9.5
     # via -r requirements.in
+pycparser==2.21
+    # via cffi
 pytest==7.2.2
     # via pytest-django
 pytest-django==4.5.2
     # via -r requirements.in
-python-cas==1.6.0
-    # via django-cas-ng
 pytz==2023.2
     # via djangorestframework
 requests==2.28.2
     # via
     #   coveralls
     #   django-countries-plus
-    #   python-cas
-six==1.16.0
-    # via python-cas
+    #   django-oauth-toolkit
 sqlparse==0.4.3
     # via django
 tomli==2.0.1
@@ -74,3 +80,5 @@ urllib3==1.26.15
     # via
     #   django-countries-plus
     #   requests
+wrapt==1.15.0
+    # via deprecated

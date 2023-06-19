@@ -46,9 +46,9 @@ INSTALLED_APPS = [
 
     'countries_plus',
     'languages_plus',
+    'oauth2_provider',
     'psycopg2',
     'rest_framework',
-    'django_cas_ng',
 
     'core',
     'library',
@@ -68,7 +68,6 @@ MIDDLEWARE = [
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'django_cas_ng.backends.CASBackend',
 )
 
 ROOT_URLCONF = 'parallax.urls'
@@ -152,6 +151,26 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # API CREDENTIALS
 TMDB_V3_API_KEY = env('TMDB_V3_API_KEY')
 
-# Mama-CAS settings
-CAS_SERVER_URL = env('CAS_SERVER_URL')
-CAS_VERSION = '3'
+# Rest framework settings
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    ),
+}
+
+# OAuth provider settings
+RESOURCE_SERVER_CLIENT_ID = env('RESOURCE_SERVER_CLIENT_ID')
+RESOURCE_SERVER_CLIENT_SECRET = env('RESOURCE_SERVER_CLIENT_SECRET')
+OAUTH2_PROVIDER = {
+    'SCOPES': {
+        'read': 'Read scope',
+        'write': 'Write scope',
+        'introspection': 'Introspect token scope',
+    },
+    'RESOURCE_SERVER_INTROSPECTION_URL': env('RESOURCE_SERVER_INTROSPECTION_URL'),
+    'RESOURCE_SERVER_INTROSPECTION_CREDENTIALS': (RESOURCE_SERVER_CLIENT_ID, RESOURCE_SERVER_CLIENT_SECRET),
+    'RESOURCE_SERVER_AUTH_TOKEN': None,
+}

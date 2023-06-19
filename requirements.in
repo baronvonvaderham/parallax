@@ -1,9 +1,9 @@
 coverage
 coveralls
 django
-django-cas-ng
 django-environ
 djangorestframework
 django-languages-plus
+django-oauth-toolkit
 psycopg2
 pytest-django
