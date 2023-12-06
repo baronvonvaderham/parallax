@@ -4,7 +4,7 @@ import os
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from core.models import BaseModel
+from core.models import BaseModel, User
 from media.exceptions import InvalidFilepathError, DuplicateMediaError
 from server.models import Server
 
@@ -37,6 +37,8 @@ class MovieLibraryManager(models.Manager):
 
 
 class MovieLibrary(Library):
+    authorized_users = models.ManyToManyField(User, blank=True, related_name='movie_libraries', symmetrical=False)
+
     objects = MovieLibraryManager()
 
     def add_movie_from_file(self, filepath):
@@ -70,6 +72,8 @@ class ShowLibraryManager(models.Manager):
 
 
 class ShowLibrary(Library):
+    authorized_users = models.ManyToManyField(User, blank=True, related_name='show_libraries', symmetrical=False)
+
     objects = ShowLibraryManager()
 
     def add_new_show_from_directory(self, filepath):
@@ -125,6 +129,8 @@ class VideoLibraryManager(models.Manager):
 
 
 class VideoLibrary(Library):
+    authorized_users = models.ManyToManyField(User, blank=True, related_name='video_libraries', symmetrical=False)
+
     objects = VideoLibraryManager()
 
     def add_video_from_file(self, filepath):

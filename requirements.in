@@ -1,6 +1,6 @@
 coverage
 coveralls
-django
+django>=4.2
 django-environ
 djangorestframework
 django-languages-plus

@@ -57,3 +57,14 @@ def test_add_video_from_file(video_library):
     filepath = os.path.abspath('tests/fixtures/samples/My Home Movie.mp4')
     added = video_library.add_video_from_file(filepath=filepath)
     assert added
+
+
+def test_get_library_authorized_users(movie_library, user):
+    movie_library.save()
+    user.save()
+    libraries = user.movie_libraries.count()
+    assert libraries == 0
+    user.movie_libraries.add(movie_library)
+    libraries = user.movie_libraries.count()
+    assert libraries == 1
+    print(user.movie_libraries.all())

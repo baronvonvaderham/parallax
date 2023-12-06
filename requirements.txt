@@ -14,6 +14,8 @@ cffi==1.15.1
     # via cryptography
 charset-normalizer==3.1.0
     # via requests
+colorama==0.4.6
+    # via pytest
 coverage==6.5.0
     # via
     #   -r requirements.in
@@ -24,7 +26,7 @@ cryptography==41.0.1
     # via jwcrypto
 deprecated==1.2.14
     # via jwcrypto
-django==4.1.7
+django==4.2.8
     # via
     #   -r requirements.in
     #   django-countries-plus
@@ -76,6 +78,8 @@ sqlparse==0.4.3
     # via django
 tomli==2.0.1
     # via pytest
+tzdata==2023.3
+    # via django
 urllib3==1.26.15
     # via
     #   django-countries-plus
