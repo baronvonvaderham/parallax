@@ -60,11 +60,10 @@ def test_add_video_from_file(video_library):
 
 
 def test_get_library_authorized_users(movie_library, user):
-    movie_library.save()
-    user.save()
-    libraries = user.movie_libraries.count()
+    libraries = user.movielibrary_set.count()
     assert libraries == 0
-    user.movie_libraries.add(movie_library)
-    libraries = user.movie_libraries.count()
+    user.movielibrary_set.add(movie_library)
+    user.movielibrary_set.add(movie_library)
+    libraries = user.movielibrary_set.count()
     assert libraries == 1
-    print(user.movie_libraries.all())
+    assert user.movielibrary_set.contains(movie_library)

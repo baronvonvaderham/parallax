@@ -16,12 +16,16 @@ class Library(BaseModel):
     name = models.CharField(_('name'), max_length=128, null=False, default="MyLibrary")
     folder = models.CharField(_('folder'), max_length=1024, blank=False, null=True)
     cover_photo = models.CharField(_('cover photo'), max_length=128, blank=True, null=True)
+
     server = models.ForeignKey(Server, blank=True, null=True, on_delete=models.PROTECT)
+    authorized_users = models.ManyToManyField(User, blank=True)
 
     class Meta:
         abstract = True
 
-    def __init__(self, **kwargs):
+    def __init__(self, *args, **kwargs):
+        print(args)
+        print(kwargs)
         super().__init__()
         self.name = kwargs.get('name')
         self.folder = kwargs.get('folder')
@@ -29,7 +33,7 @@ class Library(BaseModel):
         self.server = kwargs.get('server')
 
     def __str__(self):
-        return self.name
+        return self.name if self.name else ''
 
 
 class MovieLibraryManager(models.Manager):
@@ -37,8 +41,6 @@ class MovieLibraryManager(models.Manager):
 
 
 class MovieLibrary(Library):
-    authorized_users = models.ManyToManyField(User, blank=True, related_name='movie_libraries', symmetrical=False)
-
     objects = MovieLibraryManager()
 
     def add_movie_from_file(self, filepath):
@@ -72,8 +74,6 @@ class ShowLibraryManager(models.Manager):
 
 
 class ShowLibrary(Library):
-    authorized_users = models.ManyToManyField(User, blank=True, related_name='show_libraries', symmetrical=False)
-
     objects = ShowLibraryManager()
 
     def add_new_show_from_directory(self, filepath):
@@ -129,8 +129,6 @@ class VideoLibraryManager(models.Manager):
 
 
 class VideoLibrary(Library):
-    authorized_users = models.ManyToManyField(User, blank=True, related_name='video_libraries', symmetrical=False)
-
     objects = VideoLibraryManager()
 
     def add_video_from_file(self, filepath):
