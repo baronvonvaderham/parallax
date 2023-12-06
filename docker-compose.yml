@@ -49,7 +49,7 @@ services:
 
   tests:
     build: .
-    command: coverage run -m pytest -k 'test_get_library_authorized_users'
+    command: coverage run -m pytest
     volumes:
       - .:/parallax
     env_file:
