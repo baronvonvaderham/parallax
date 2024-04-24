@@ -24,8 +24,6 @@ class Library(BaseModel):
         abstract = True
 
     def __init__(self, *args, **kwargs):
-        print(args)
-        print(kwargs)
         super().__init__()
         self.name = kwargs.get('name')
         self.folder = kwargs.get('folder')

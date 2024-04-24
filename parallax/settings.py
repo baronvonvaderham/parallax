@@ -31,7 +31,7 @@ SECRET_KEY = 'django-insecure-xyprfmkl7&tzst=r99pdxi(_@**&$&o@ik5e**h4df499s3udx
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0']
 
 
 # Application definition
@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'countries_plus',
     'languages_plus',
     'oauth2_provider',
-    'psycopg2',
     'rest_framework',
 
     'core',
@@ -97,12 +96,8 @@ WSGI_APPLICATION = 'parallax.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME', 'parallax'),
-        'USER': os.getenv('DB_USER', 'parallax'),
-        'PASSWORD': os.getenv('DB_PASSWORD', 'parallax'),
-        'HOST': os.getenv('DB_HOST', 'localhost'),
-        'PORT': 5432,
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'parallax.db'),
     }
 }
 
@@ -162,15 +157,17 @@ REST_FRAMEWORK = {
 }
 
 # OAuth provider settings
-# RESOURCE_SERVER_CLIENT_ID = env('RESOURCE_SERVER_CLIENT_ID')
-# RESOURCE_SERVER_CLIENT_SECRET = env('RESOURCE_SERVER_CLIENT_SECRET')
-# OAUTH2_PROVIDER = {
-#     'SCOPES': {
-#         'read': 'Read scope',
-#         'write': 'Write scope',
-#         'introspection': 'Introspect token scope',
-#     },
-#     'RESOURCE_SERVER_INTROSPECTION_URL': env('RESOURCE_SERVER_INTROSPECTION_URL'),
-#     'RESOURCE_SERVER_INTROSPECTION_CREDENTIALS': (RESOURCE_SERVER_CLIENT_ID, RESOURCE_SERVER_CLIENT_SECRET),
-#     'RESOURCE_SERVER_AUTH_TOKEN': None,
-# }
+RESOURCE_SERVER_CLIENT_ID = env('RESOURCE_SERVER_CLIENT_ID')
+RESOURCE_SERVER_CLIENT_SECRET = env('RESOURCE_SERVER_CLIENT_SECRET')
+OAUTH2_PROVIDER = {
+    'SCOPES': {
+        'read': 'Read scope',
+        'write': 'Write scope',
+        'introspection': 'Introspect token scope',
+    },
+    'RESOURCE_SERVER_INTROSPECTION_URL': env('RESOURCE_SERVER_INTROSPECTION_URL'),
+    'RESOURCE_SERVER_INTROSPECTION_CREDENTIALS': (RESOURCE_SERVER_CLIENT_ID, RESOURCE_SERVER_CLIENT_SECRET),
+    'RESOURCE_SERVER_AUTH_TOKEN': None,
+}
+
+LOGIN_URL = '/admin/login/'

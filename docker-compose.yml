@@ -8,18 +8,6 @@ networks:
   default:
 
 services:
-  db:
-    image: postgres:latest
-    volumes:
-      - database_data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_USER=parallax
-      - POSTGRES_DB=parallax
-      - POSTGRES_PASSWORD=parallax
-    ports:
-      - '5432:5432'
-    networks:
-      - default
 
   parallax:
     build: .
@@ -36,14 +24,6 @@ services:
       - PYTHONUNBUFFERED=1
       - DJANGO_SETTINGS_MODULE=parallax.settings
       - DEBUG=True
-      - DB_HOST=db
-      - DB_NAME=parallax
-      - DB_USER=parallax
-      - DB_PASSWORD=parallax
-    links:
-      - db
-    depends_on:
-      - db
     networks:
       - default
 
@@ -57,13 +37,5 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
       - DJANGO_SETTINGS_MODULE=parallax.test_settings
-      - DB_HOST=db
-      - DB_NAME=parallax
-      - DB_USER=parallax
-      - DB_PASSWORD=parallax
-    links:
-      - db
-    depends_on:
-      - db
     networks:
       - default

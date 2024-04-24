@@ -1,5 +1,7 @@
-from rest_framework.views import APIView
+from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope, TokenHasScope
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from core.models import User
 

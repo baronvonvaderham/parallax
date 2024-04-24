@@ -6,7 +6,7 @@ from media.movies.models import Movie
 
 
 class MovieSerializer(serializers.ModelSerializer):
-    filepath = serializers.CharField(required=True, max_length=1024)
+    filepath = serializers.CharField(required=False, max_length=1024)
     title = serializers.CharField(required=True, max_length=256)
     sort_title = serializers.CharField(required=False, max_length=256, allow_null=True)
     alternate_title = serializers.CharField(required=False, max_length=256, allow_null=True)

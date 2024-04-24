@@ -14,8 +14,6 @@ cffi==1.15.1
     # via cryptography
 charset-normalizer==3.1.0
     # via requests
-colorama==0.4.6
-    # via pytest
 coverage==6.5.0
     # via
     #   -r requirements.in
@@ -59,8 +57,6 @@ packaging==23.0
     # via pytest
 pluggy==1.0.0
     # via pytest
-psycopg2==2.9.5
-    # via -r requirements.in
 pycparser==2.21
     # via cffi
 pytest==7.2.2
@@ -78,8 +74,6 @@ sqlparse==0.4.3
     # via django
 tomli==2.0.1
     # via pytest
-tzdata==2023.3
-    # via django
 urllib3==1.26.15
     # via
     #   django-countries-plus

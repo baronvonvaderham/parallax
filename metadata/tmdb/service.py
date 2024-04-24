@@ -188,10 +188,10 @@ class TheMovieDatabaseService(object):
         Helper method to extract Credits out of the TMDB response data.
         """
         credits = []
-        for member in data.get('cast'):
+        for member in data.get('cast')[:1]:
             credits.append({'name': member.get('name'), 'role': member.get('character'), 'type': 'cast'})
-        for member in data.get('crew'):
-            credits.append({'name': member.get('name'), 'role': member.get('job'), 'type': 'crew'})
+        # for member in data.get('crew'):
+        #     credits.append({'name': member.get('name'), 'role': member.get('job'), 'type': 'crew'})
         return credits
 
     @staticmethod

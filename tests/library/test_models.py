@@ -63,7 +63,6 @@ def test_get_library_authorized_users(movie_library, user):
     libraries = user.movielibrary_set.count()
     assert libraries == 0
     user.movielibrary_set.add(movie_library)
-    user.movielibrary_set.add(movie_library)
     libraries = user.movielibrary_set.count()
     assert libraries == 1
     assert user.movielibrary_set.contains(movie_library)
