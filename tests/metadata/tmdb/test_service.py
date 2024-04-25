@@ -40,7 +40,7 @@ class TestTMDBService:
         for movie in results:
             assert movie['release_date'] in ['2010-12-22', '1969-06-11', '1965-10-24', '1978-05-19', '1988-12-26', '2019-05-26']
 
-    def test_retrieve_movie_metadata(self, tmdb_service, jeff_bridges):
+    def test_retrieve_movie_metadata(self, tmdb_service):
         kwargs = {
             'query': 'The Big Lebowski',
             'year': '1998'
@@ -57,7 +57,7 @@ class TestTMDBService:
         assert len(serializer.validated_data.get('credits')) >= 167
         assert serializer.validated_data.get('credits')[0].get('name') == 'Jeff Bridges'
         assert serializer.validated_data.get('credits')[0].get('type') == 'cast'
-        assert serializer.validated_data.get('credits')[0].get('role') == 'Jeffrey \'The Dude\' Lebowski'
+        assert serializer.validated_data.get('credits')[0].get('role') == 'The Dude'
 
     def test_retrieve_show_metadata(self, tmdb_service):
         kwargs = {
